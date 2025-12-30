@@ -276,4 +276,4 @@ The tools and methodology presented here provide a **reproducible framework** fo
 
 ---
 
-*This case study is part of the [credit-bias-audit](https://github.com/your-username/credit-bias-audit) portfolio project demonstrating responsible ML practices.*
+*This case study is part of the [credit-bias-audit](https://github.com/oscgonz19/credit-bias-audit) portfolio project demonstrating responsible ML practices.*

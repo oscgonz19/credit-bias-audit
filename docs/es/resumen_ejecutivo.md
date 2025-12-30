@@ -203,7 +203,7 @@ reports/
 
 **Tipo de Proyecto:** Portafolio / Open Source
 **Dominio:** IA Responsable / Equidad en ML
-**Repositorio:** [credit-bias-audit](https://github.com/tu-usuario/credit-bias-audit)
+**Repositorio:** [credit-bias-audit](https://github.com/oscgonz19/credit-bias-audit)
 
 ---
 

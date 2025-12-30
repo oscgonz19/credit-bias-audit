@@ -40,7 +40,7 @@ A reproducible pipeline for auditing fairness in credit risk models. This projec
 
 ```bash
 # 1. Clone and setup environment
-git clone https://github.com/your-username/credit-bias-audit.git
+git clone https://github.com/oscgonz19/credit-bias-audit.git
 cd credit-bias-audit
 make setup
 conda activate credit-bias-audit
@@ -323,7 +323,7 @@ Un pipeline reproducible para auditar equidad en modelos de riesgo crediticio. E
 
 ```bash
 # 1. Clonar y configurar entorno
-git clone https://github.com/your-username/credit-bias-audit.git
+git clone https://github.com/oscgonz19/credit-bias-audit.git
 cd credit-bias-audit
 make setup
 conda activate credit-bias-audit

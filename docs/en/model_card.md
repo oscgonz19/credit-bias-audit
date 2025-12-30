@@ -94,7 +94,7 @@ See `data_sheet.md` for detailed data documentation.
 ## Additional Information
 
 ### Contact
-- Repository: [credit-bias-audit](https://github.com/your-username/credit-bias-audit)
+- Repository: [credit-bias-audit](https://github.com/oscgonz19/credit-bias-audit)
 
 ### References
 - Hardt, M., Price, E., & Srebro, N. (2016). Equality of opportunity in supervised learning.

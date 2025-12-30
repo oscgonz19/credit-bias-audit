@@ -267,4 +267,4 @@ Las herramientas y metodología presentadas aquí proporcionan un **marco reprod
 
 ---
 
-*Este caso de estudio es parte del proyecto de portafolio [credit-bias-audit](https://github.com/tu-usuario/credit-bias-audit) demostrando prácticas de ML responsable.*
+*Este caso de estudio es parte del proyecto de portafolio [credit-bias-audit](https://github.com/oscgonz19/credit-bias-audit) demostrando prácticas de ML responsable.*

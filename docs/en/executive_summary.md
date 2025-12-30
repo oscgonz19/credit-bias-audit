@@ -203,7 +203,7 @@ reports/
 
 **Project Type:** Portfolio / Open Source
 **Domain:** Responsible AI / ML Fairness
-**Repository:** [credit-bias-audit](https://github.com/your-username/credit-bias-audit)
+**Repository:** [credit-bias-audit](https://github.com/oscgonz19/credit-bias-audit)
 
 ---
 
