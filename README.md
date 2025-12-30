@@ -8,6 +8,34 @@
 
 ---
 
+## Documentation | Documentación
+
+### Complete Documentation Suite
+
+| Document | Description | Audience | EN | ES |
+|----------|-------------|----------|----|----|
+| **Case Study** | Complete portfolio case study | General | [Link](docs/en/case_study.md) | [Link](docs/es/caso_estudio.md) |
+| **Executive Summary** | High-level overview with architecture | Recruiters / Managers | [Link](docs/en/executive_summary.md) | [Link](docs/es/resumen_ejecutivo.md) |
+| **Technical Appendix** | Detailed technical documentation | Tech Leads / Engineers | [Link](docs/en/technical_appendix.md) | [Link](docs/es/apendice_tecnico.md) |
+| **Pipeline Explained** | How the prediction pipeline works | Data Scientists | [Link](docs/en/pipeline_explained.md) | [Link](docs/es/pipeline_explicado.md) |
+| **Mathematical Formulas** | Fairness metrics derivations | Statisticians / Quants | [Link](docs/en/mathematical_formulas.md) | [Link](docs/es/formulas_matematicas.md) |
+| **Model Card** | Model documentation and intended use | All | [Link](docs/en/model_card.md) | [Link](docs/es/ficha_modelo.md) |
+| **Data Sheet** | Dataset documentation and biases | All | [Link](docs/en/data_sheet.md) | [Link](docs/es/hoja_datos.md) |
+
+### Quick Navigation | Navegación Rápida
+
+```
+📚 Start Here Based on Your Role / Comienza Según Tu Rol:
+
+👔 Recruiters/Managers   → docs/en/executive_summary.md | docs/es/resumen_ejecutivo.md
+👨‍💻 Engineers            → docs/en/technical_appendix.md | docs/es/apendice_tecnico.md
+📊 Data Scientists       → docs/en/pipeline_explained.md | docs/es/pipeline_explicado.md
+🔬 Researchers           → docs/en/mathematical_formulas.md | docs/es/formulas_matematicas.md
+📋 Everyone              → docs/en/case_study.md | docs/es/caso_estudio.md
+```
+
+---
+
 ## English
 
 A reproducible pipeline for auditing fairness in credit risk models. This project demonstrates responsible ML practices by:
@@ -186,34 +214,6 @@ pytest tests/test_smoke.py::TestFairnessMetrics -v
 
 # Quick integration test
 make test-quick
-```
-
----
-
-## Documentation
-
-### Complete Documentation Suite
-
-| Document | Description | Audience | EN | ES |
-|----------|-------------|----------|----|----|
-| **Case Study** | Complete portfolio case study | General | [Link](docs/en/case_study.md) | [Link](docs/es/caso_estudio.md) |
-| **Executive Summary** | High-level overview with architecture | Recruiters / Managers | [Link](docs/en/executive_summary.md) | [Link](docs/es/resumen_ejecutivo.md) |
-| **Technical Appendix** | Detailed technical documentation | Tech Leads / Engineers | [Link](docs/en/technical_appendix.md) | [Link](docs/es/apendice_tecnico.md) |
-| **Pipeline Explained** | How the prediction pipeline works | Data Scientists | [Link](docs/en/pipeline_explained.md) | [Link](docs/es/pipeline_explicado.md) |
-| **Mathematical Formulas** | Fairness metrics derivations | Statisticians / Quants | [Link](docs/en/mathematical_formulas.md) | [Link](docs/es/formulas_matematicas.md) |
-| **Model Card** | Model documentation and intended use | All | [Link](docs/en/model_card.md) | [Link](docs/es/ficha_modelo.md) |
-| **Data Sheet** | Dataset documentation and biases | All | [Link](docs/en/data_sheet.md) | [Link](docs/es/hoja_datos.md) |
-
-### Quick Navigation
-
-```
-📚 Start Here Based on Your Role:
-
-👔 Recruiters/Managers  → docs/en/executive_summary.md | docs/es/resumen_ejecutivo.md
-👨‍💻 Engineers           → docs/en/technical_appendix.md | docs/es/apendice_tecnico.md
-📊 Data Scientists      → docs/en/pipeline_explained.md | docs/es/pipeline_explicado.md
-🔬 Researchers          → docs/en/mathematical_formulas.md | docs/es/formulas_matematicas.md
-📋 Everyone             → docs/en/case_study.md | docs/es/caso_estudio.md
 ```
 
 ---
@@ -433,34 +433,6 @@ Ajusta predicciones para igualar TPR y FPR entre grupos.
 ✓ Máxima mejora en equidad
 ✗ Requiere atributo protegido en inferencia
 ✗ Puede reducir accuracy significativamente
-```
-
----
-
-## Documentación
-
-### Suite Completa de Documentación
-
-| Documento | Descripción | Audiencia | EN | ES |
-|-----------|-------------|-----------|----|----|
-| **Caso de Estudio** | Caso completo de portafolio | General | [Link](docs/en/case_study.md) | [Link](docs/es/caso_estudio.md) |
-| **Resumen Ejecutivo** | Visión de alto nivel con arquitectura | Reclutadores / Gerentes | [Link](docs/en/executive_summary.md) | [Link](docs/es/resumen_ejecutivo.md) |
-| **Apéndice Técnico** | Documentación técnica detallada | Tech Leads / Ingenieros | [Link](docs/en/technical_appendix.md) | [Link](docs/es/apendice_tecnico.md) |
-| **Pipeline Explicado** | Cómo funciona el pipeline | Data Scientists | [Link](docs/en/pipeline_explained.md) | [Link](docs/es/pipeline_explicado.md) |
-| **Fórmulas Matemáticas** | Derivaciones de métricas | Estadísticos / Quants | [Link](docs/en/mathematical_formulas.md) | [Link](docs/es/formulas_matematicas.md) |
-| **Ficha del Modelo** | Documentación del modelo | Todos | [Link](docs/en/model_card.md) | [Link](docs/es/ficha_modelo.md) |
-| **Hoja de Datos** | Documentación del dataset | Todos | [Link](docs/en/data_sheet.md) | [Link](docs/es/hoja_datos.md) |
-
-### Navegación Rápida
-
-```
-📚 Comienza Aquí Según Tu Rol:
-
-👔 Reclutadores/Gerentes  → docs/es/resumen_ejecutivo.md
-👨‍💻 Ingenieros            → docs/es/apendice_tecnico.md
-📊 Data Scientists        → docs/es/pipeline_explicado.md
-🔬 Investigadores         → docs/es/formulas_matematicas.md
-📋 Todos                  → docs/es/caso_estudio.md
 ```
 
 ---

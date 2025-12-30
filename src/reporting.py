@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Any, Optional
+from typing import Any, Dict, List, Optional
 
 import pandas as pd
 
@@ -26,23 +26,27 @@ def generate_metrics_csv(
 
         # Performance metrics
         for metric_name, value in metrics.get("performance", {}).items():
-            rows.append({
-                "model": model_name,
-                "mitigation": mitigation,
-                "category": "performance",
-                "metric": metric_name,
-                "value": value,
-            })
+            rows.append(
+                {
+                    "model": model_name,
+                    "mitigation": mitigation,
+                    "category": "performance",
+                    "metric": metric_name,
+                    "value": value,
+                }
+            )
 
         # Fairness metrics
         for metric_name, value in metrics.get("fairness", {}).items():
-            rows.append({
-                "model": model_name,
-                "mitigation": mitigation,
-                "category": "fairness",
-                "metric": metric_name,
-                "value": value,
-            })
+            rows.append(
+                {
+                    "model": model_name,
+                    "mitigation": mitigation,
+                    "category": "fairness",
+                    "metric": metric_name,
+                    "value": value,
+                }
+            )
 
     df = pd.DataFrame(rows)
     df.to_csv(output_path, index=False)
@@ -179,9 +183,7 @@ def interpret_fairness_metrics(metrics: Dict[str, float]) -> List[str]:
     # Average Odds Difference
     aod = metrics.get("average_odds_difference", 0)
     if abs(aod) < 0.1:
-        interpretations.append(
-            f"- **Average Odds Difference** ({aod:.4f}): Near equalized odds."
-        )
+        interpretations.append(f"- **Average Odds Difference** ({aod:.4f}): Near equalized odds.")
     else:
         interpretations.append(
             f"- **Average Odds Difference** ({aod:.4f}): Significant difference in "
@@ -274,25 +276,33 @@ def generate_markdown_report(
         mitigated_acc = mitigated.get("metrics", {}).get("performance", {}).get("accuracy", 0)
         acc_diff = mitigated_acc - baseline_acc
 
-        baseline_spd = abs(baseline.get("metrics", {}).get("fairness", {}).get("statistical_parity_difference", 0))
-        mitigated_spd = abs(mitigated.get("metrics", {}).get("fairness", {}).get("statistical_parity_difference", 0))
+        baseline_spd = abs(
+            baseline.get("metrics", {}).get("fairness", {}).get("statistical_parity_difference", 0)
+        )
+        mitigated_spd = abs(
+            mitigated.get("metrics", {}).get("fairness", {}).get("statistical_parity_difference", 0)
+        )
         spd_improvement = baseline_spd - mitigated_spd
 
         lines.append(f"Comparing baseline to {mitigated.get('mitigation', 'mitigated')}:")
         lines.append("")
-        lines.append(f"- **Accuracy change:** {acc_diff:+.4f} ({acc_diff*100:+.2f}%)")
+        lines.append(f"- **Accuracy change:** {acc_diff:+.4f} ({acc_diff * 100:+.2f}%)")
         lines.append(f"- **SPD improvement:** {spd_improvement:.4f} (closer to 0 is better)")
         lines.append("")
 
         if acc_diff < -0.05 and spd_improvement > 0.1:
-            lines.append("The mitigation significantly improved fairness but at a notable cost to accuracy. ")
+            lines.append(
+                "The mitigation significantly improved fairness but at a notable cost to accuracy. "
+            )
             lines.append("Consider whether this trade-off is acceptable for your use case.")
         elif acc_diff >= -0.02 and spd_improvement > 0.05:
             lines.append("The mitigation improved fairness with minimal impact on accuracy. ")
             lines.append("This represents a favorable trade-off.")
         else:
             lines.append("The trade-off between fairness and performance should be evaluated ")
-            lines.append("in the context of specific business requirements and regulatory constraints.")
+            lines.append(
+                "in the context of specific business requirements and regulatory constraints."
+            )
 
     lines.append("")
 
@@ -344,14 +354,18 @@ def create_report_summary(results: List[Dict[str, Any]]) -> Dict[str, Any]:
         # Best fairness (closest SPD to 0)
         best_fairness = min(
             results,
-            key=lambda r: abs(r.get("metrics", {}).get("fairness", {}).get("statistical_parity_difference", float("inf")))
+            key=lambda r: abs(
+                r.get("metrics", {})
+                .get("fairness", {})
+                .get("statistical_parity_difference", float("inf"))
+            ),
         )
         summary["best_fairness_mitigation"] = best_fairness.get("mitigation")
 
         # Best accuracy
         best_accuracy = max(
             results,
-            key=lambda r: r.get("metrics", {}).get("performance", {}).get("accuracy", 0)
+            key=lambda r: r.get("metrics", {}).get("performance", {}).get("accuracy", 0),
         )
         summary["best_accuracy_mitigation"] = best_accuracy.get("mitigation")
 

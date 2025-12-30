@@ -1,20 +1,22 @@
 """Data loading, preprocessing, and splitting utilities."""
 
 from pathlib import Path
-from typing import Tuple, Optional, List, Dict, Any
+from typing import Any, Dict, List, Optional, Tuple
 
-import numpy as np
 import pandas as pd
-from sklearn.model_selection import train_test_split
 from aif360.datasets import BinaryLabelDataset
-
+from sklearn.model_selection import train_test_split
 
 # Protected attribute configurations
 PROTECTED_ATTR_CONFIG = {
     "german": {
         "sex": {"privileged": 1, "unprivileged": 0, "map": {"male": 1, "female": 0}},
         "age": {"privileged": 1, "unprivileged": 0, "map": {"aged": 1, "young": 0}},
-        "foreign_worker": {"privileged": 1, "unprivileged": 0, "map": {"no": 1, "yes": 0}},
+        "foreign_worker": {
+            "privileged": 1,
+            "unprivileged": 0,
+            "map": {"no": 1, "yes": 0},
+        },
     },
     "adult": {
         "sex": {"privileged": 1, "unprivileged": 0, "map": {"Male": 1, "Female": 0}},
@@ -47,14 +49,16 @@ def load_adult_census(data_path: Path) -> pd.DataFrame:
     """
     df = pd.read_csv(data_path)
     # Standardize column names
-    df = df.rename(columns={
-        "education-num": "education_num",
-        "marital-status": "marital_status",
-        "capital-gain": "capital_gain",
-        "capital-loss": "capital_loss",
-        "hours-per-week": "hours_per_week",
-        "native-country": "native_country",
-    })
+    df = df.rename(
+        columns={
+            "education-num": "education_num",
+            "marital-status": "marital_status",
+            "capital-gain": "capital_gain",
+            "capital-loss": "capital_loss",
+            "hours-per-week": "hours_per_week",
+            "native-country": "native_country",
+        }
+    )
     return df
 
 

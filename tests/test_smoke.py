@@ -11,20 +11,19 @@ import pytest
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.data import (
-    preprocess_german,
     create_feature_matrix,
-    split_data,
     get_privileged_groups,
-    create_aif360_dataset,
+    preprocess_german,
+    split_data,
 )
-from src.models import CreditRiskModel, train_baseline_model, get_predictions
 from src.fairness_metrics import (
-    compute_performance_metrics,
-    compute_fairness_metrics,
-    compute_statistical_parity_difference,
     compute_disparate_impact,
+    compute_fairness_metrics,
+    compute_performance_metrics,
+    compute_statistical_parity_difference,
 )
-from src.mitigation import ReweighingMitigation, apply_reweighing
+from src.mitigation import apply_reweighing
+from src.models import CreditRiskModel, get_predictions, train_baseline_model
 
 
 @pytest.fixture
@@ -258,9 +257,7 @@ class TestIntegration:
 
         # Compute metrics
         protected_values = processed_data["X_test"]["sex"].values
-        perf_metrics = compute_performance_metrics(
-            processed_data["y_test"].values, preds, proba
-        )
+        perf_metrics = compute_performance_metrics(processed_data["y_test"].values, preds, proba)
         fair_metrics = compute_fairness_metrics(
             processed_data["y_test"].values, preds, protected_values
         )

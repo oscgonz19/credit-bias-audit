@@ -1,20 +1,20 @@
 """Fairness metrics computation using AIF360 and custom implementations."""
 
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 import pandas as pd
+from aif360.datasets import BinaryLabelDataset
+from aif360.metrics import ClassificationMetric
 from sklearn.metrics import (
     accuracy_score,
     balanced_accuracy_score,
-    roc_auc_score,
+    confusion_matrix,
+    f1_score,
     precision_score,
     recall_score,
-    f1_score,
-    confusion_matrix,
+    roc_auc_score,
 )
-from aif360.datasets import BinaryLabelDataset
-from aif360.metrics import BinaryLabelDatasetMetric, ClassificationMetric
 
 
 def compute_performance_metrics(
@@ -230,9 +230,7 @@ def compute_fairness_metrics(
         "statistical_parity_difference": compute_statistical_parity_difference(
             y_pred, protected_attr, privileged_value
         ),
-        "disparate_impact": compute_disparate_impact(
-            y_pred, protected_attr, privileged_value
-        ),
+        "disparate_impact": compute_disparate_impact(y_pred, protected_attr, privileged_value),
         "equal_opportunity_difference": compute_equal_opportunity_difference(
             y_true, y_pred, protected_attr, privileged_value
         ),
@@ -302,9 +300,7 @@ def compute_all_metrics(
     """
     return {
         "performance": compute_performance_metrics(y_true, y_pred, y_proba),
-        "fairness": compute_fairness_metrics(
-            y_true, y_pred, protected_attr, privileged_value
-        ),
+        "fairness": compute_fairness_metrics(y_true, y_pred, protected_attr, privileged_value),
         "group_performance": compute_group_metrics(
             y_true, y_pred, y_proba, protected_attr, privileged_value
         ),
@@ -363,22 +359,26 @@ def metrics_to_dataframe(
 
     # Performance metrics
     for metric_name, value in metrics["performance"].items():
-        rows.append({
-            "model": model_name,
-            "mitigation": mitigation,
-            "category": "performance",
-            "metric": metric_name,
-            "value": value,
-        })
+        rows.append(
+            {
+                "model": model_name,
+                "mitigation": mitigation,
+                "category": "performance",
+                "metric": metric_name,
+                "value": value,
+            }
+        )
 
     # Fairness metrics
     for metric_name, value in metrics["fairness"].items():
-        rows.append({
-            "model": model_name,
-            "mitigation": mitigation,
-            "category": "fairness",
-            "metric": metric_name,
-            "value": value,
-        })
+        rows.append(
+            {
+                "model": model_name,
+                "mitigation": mitigation,
+                "category": "fairness",
+                "metric": metric_name,
+                "value": value,
+            }
+        )
 
     return pd.DataFrame(rows)

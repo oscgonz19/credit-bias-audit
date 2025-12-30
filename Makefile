@@ -76,12 +76,12 @@ test-ci:
 
 # Code quality
 lint:
-	black --check src/ scripts/ tests/
-	isort --check-only src/ scripts/ tests/
+	ruff check src/ scripts/ tests/
+	ruff format --check src/ scripts/ tests/
 
 format:
-	black src/ scripts/ tests/
-	isort src/ scripts/ tests/
+	ruff check --fix src/ scripts/ tests/
+	ruff format src/ scripts/ tests/
 
 # Cleanup
 clean:

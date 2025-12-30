@@ -1,12 +1,15 @@
 """Bias mitigation strategies using AIF360."""
 
-from typing import Dict, List, Tuple, Optional, Any
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 import pandas as pd
-from aif360.datasets import BinaryLabelDataset
+from aif360.algorithms.postprocessing import (
+    CalibratedEqOddsPostprocessing,
+    EqOddsPostprocessing,
+)
 from aif360.algorithms.preprocessing import Reweighing
-from aif360.algorithms.postprocessing import EqOddsPostprocessing, CalibratedEqOddsPostprocessing
+from aif360.datasets import BinaryLabelDataset
 
 from .data import create_aif360_dataset
 

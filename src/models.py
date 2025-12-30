@@ -1,12 +1,12 @@
 """Model wrappers for credit risk classification."""
 
-from typing import Optional, Dict, Any, Tuple
+from typing import Any, Dict, Optional, Tuple
 
 import numpy as np
 import pandas as pd
-from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
+from sklearn.base import BaseEstimator
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.base import BaseEstimator, ClassifierMixin
+from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
 
 
 class CreditRiskModel:
@@ -59,8 +59,7 @@ class CreditRiskModel:
             )
         else:
             raise ValueError(
-                f"Unknown model type: {self.model_type}. "
-                f"Supported: {self.SUPPORTED_MODELS}"
+                f"Unknown model type: {self.model_type}. Supported: {self.SUPPORTED_MODELS}"
             )
 
     def fit(

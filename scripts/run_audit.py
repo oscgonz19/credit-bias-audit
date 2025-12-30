@@ -4,19 +4,18 @@
 import argparse
 import sys
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Any, Dict
 
 import numpy as np
-import pandas as pd
 
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.data import load_and_prepare_data, create_aif360_dataset
-from src.models import train_baseline_model, get_predictions
+from src.data import load_and_prepare_data
 from src.fairness_metrics import compute_all_metrics
-from src.mitigation import apply_reweighing, apply_eq_odds_postprocessing
-from src.reporting import generate_metrics_csv, generate_markdown_report
+from src.mitigation import apply_eq_odds_postprocessing, apply_reweighing
+from src.models import get_predictions, train_baseline_model
+from src.reporting import generate_markdown_report, generate_metrics_csv
 
 
 def run_baseline_audit(
@@ -61,12 +60,12 @@ def run_baseline_audit(
         privileged_value=data["privileged_groups"][0][data["protected_attr"]],
     )
 
-    print(f"\nPerformance:")
+    print("\nPerformance:")
     print(f"  Accuracy: {metrics['performance']['accuracy']:.4f}")
     print(f"  Balanced Accuracy: {metrics['performance']['balanced_accuracy']:.4f}")
     print(f"  AUC: {metrics['performance']['auc']:.4f}")
 
-    print(f"\nFairness:")
+    print("\nFairness:")
     print(f"  Statistical Parity Diff: {metrics['fairness']['statistical_parity_difference']:.4f}")
     print(f"  Disparate Impact: {metrics['fairness']['disparate_impact']:.4f}")
     print(f"  Equal Opportunity Diff: {metrics['fairness']['equal_opportunity_difference']:.4f}")
@@ -109,7 +108,9 @@ def run_reweighing_audit(
         data["unprivileged_groups"],
     )
 
-    print(f"Applied reweighing: weights range [{sample_weights.min():.3f}, {sample_weights.max():.3f}]")
+    print(
+        f"Applied reweighing: weights range [{sample_weights.min():.3f}, {sample_weights.max():.3f}]"
+    )
 
     # Train model with weights
     model = train_baseline_model(
@@ -135,12 +136,12 @@ def run_reweighing_audit(
         privileged_value=data["privileged_groups"][0][data["protected_attr"]],
     )
 
-    print(f"\nPerformance:")
+    print("\nPerformance:")
     print(f"  Accuracy: {metrics['performance']['accuracy']:.4f}")
     print(f"  Balanced Accuracy: {metrics['performance']['balanced_accuracy']:.4f}")
     print(f"  AUC: {metrics['performance']['auc']:.4f}")
 
-    print(f"\nFairness:")
+    print("\nFairness:")
     print(f"  Statistical Parity Diff: {metrics['fairness']['statistical_parity_difference']:.4f}")
     print(f"  Disparate Impact: {metrics['fairness']['disparate_impact']:.4f}")
     print(f"  Equal Opportunity Diff: {metrics['fairness']['equal_opportunity_difference']:.4f}")
@@ -199,12 +200,12 @@ def run_eq_odds_audit(
         privileged_value=data["privileged_groups"][0][data["protected_attr"]],
     )
 
-    print(f"\nPerformance:")
+    print("\nPerformance:")
     print(f"  Accuracy: {metrics['performance']['accuracy']:.4f}")
     print(f"  Balanced Accuracy: {metrics['performance']['balanced_accuracy']:.4f}")
-    print(f"  AUC: N/A (post-processing)")
+    print("  AUC: N/A (post-processing)")
 
-    print(f"\nFairness:")
+    print("\nFairness:")
     print(f"  Statistical Parity Diff: {metrics['fairness']['statistical_parity_difference']:.4f}")
     print(f"  Disparate Impact: {metrics['fairness']['disparate_impact']:.4f}")
     print(f"  Equal Opportunity Diff: {metrics['fairness']['equal_opportunity_difference']:.4f}")

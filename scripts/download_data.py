@@ -4,15 +4,18 @@
 import argparse
 import sys
 from pathlib import Path
-from urllib.request import urlretrieve
 from urllib.error import URLError
+from urllib.request import urlretrieve
 
 import pandas as pd
 
-
 # Dataset URLs
-GERMAN_CREDIT_URL = "https://archive.ics.uci.edu/ml/machine-learning-databases/statlog/german/german.data"
-GERMAN_CREDIT_NAMES_URL = "https://archive.ics.uci.edu/ml/machine-learning-databases/statlog/german/german.doc"
+GERMAN_CREDIT_URL = (
+    "https://archive.ics.uci.edu/ml/machine-learning-databases/statlog/german/german.data"
+)
+GERMAN_CREDIT_NAMES_URL = (
+    "https://archive.ics.uci.edu/ml/machine-learning-databases/statlog/german/german.doc"
+)
 
 # Adult dataset from UCI
 ADULT_TRAIN_URL = "https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data"
@@ -20,17 +23,45 @@ ADULT_TEST_URL = "https://archive.ics.uci.edu/ml/machine-learning-databases/adul
 
 # Column definitions
 GERMAN_COLUMNS = [
-    "checking_status", "duration", "credit_history", "purpose", "credit_amount",
-    "savings_status", "employment", "installment_commitment", "personal_status_sex",
-    "other_parties", "residence_since", "property_magnitude", "age",
-    "other_payment_plans", "housing", "existing_credits", "job", "num_dependents",
-    "own_telephone", "foreign_worker", "credit-risk"
+    "checking_status",
+    "duration",
+    "credit_history",
+    "purpose",
+    "credit_amount",
+    "savings_status",
+    "employment",
+    "installment_commitment",
+    "personal_status_sex",
+    "other_parties",
+    "residence_since",
+    "property_magnitude",
+    "age",
+    "other_payment_plans",
+    "housing",
+    "existing_credits",
+    "job",
+    "num_dependents",
+    "own_telephone",
+    "foreign_worker",
+    "credit-risk",
 ]
 
 ADULT_COLUMNS = [
-    "age", "workclass", "fnlwgt", "education", "education-num", "marital-status",
-    "occupation", "relationship", "race", "sex", "capital-gain", "capital-loss",
-    "hours-per-week", "native-country", "income"
+    "age",
+    "workclass",
+    "fnlwgt",
+    "education",
+    "education-num",
+    "marital-status",
+    "occupation",
+    "relationship",
+    "race",
+    "sex",
+    "capital-gain",
+    "capital-loss",
+    "hours-per-week",
+    "native-country",
+    "income",
 ]
 
 
@@ -68,55 +99,69 @@ def process_german_credit(raw_path: Path, output_path: Path) -> None:
 
     # Decode categorical values
     checking_status_map = {
-        "A11": "<0", "A12": "0<=X<200", "A13": ">=200", "A14": "no checking"
+        "A11": "<0",
+        "A12": "0<=X<200",
+        "A13": ">=200",
+        "A14": "no checking",
     }
     credit_history_map = {
-        "A30": "no credits/all paid", "A31": "all paid",
-        "A32": "existing paid", "A33": "delayed previously",
-        "A34": "critical/other existing credit"
+        "A30": "no credits/all paid",
+        "A31": "all paid",
+        "A32": "existing paid",
+        "A33": "delayed previously",
+        "A34": "critical/other existing credit",
     }
     purpose_map = {
-        "A40": "new car", "A41": "used car", "A42": "furniture/equipment",
-        "A43": "radio/tv", "A44": "domestic appliance", "A45": "repairs",
-        "A46": "education", "A47": "vacation", "A48": "retraining",
-        "A49": "business", "A410": "other"
+        "A40": "new car",
+        "A41": "used car",
+        "A42": "furniture/equipment",
+        "A43": "radio/tv",
+        "A44": "domestic appliance",
+        "A45": "repairs",
+        "A46": "education",
+        "A47": "vacation",
+        "A48": "retraining",
+        "A49": "business",
+        "A410": "other",
     }
     savings_status_map = {
-        "A61": "<100", "A62": "100<=X<500", "A63": "500<=X<1000",
-        "A64": ">=1000", "A65": "no known savings"
+        "A61": "<100",
+        "A62": "100<=X<500",
+        "A63": "500<=X<1000",
+        "A64": ">=1000",
+        "A65": "no known savings",
     }
     employment_map = {
-        "A71": "unemployed", "A72": "<1", "A73": "1<=X<4",
-        "A74": "4<=X<7", "A75": ">=7"
+        "A71": "unemployed",
+        "A72": "<1",
+        "A73": "1<=X<4",
+        "A74": "4<=X<7",
+        "A75": ">=7",
     }
     personal_status_sex_map = {
-        "A91": "male:divorced/separated", "A92": "female:divorced/separated/married",
-        "A93": "male:single", "A94": "male:married/widowed",
-        "A95": "female:single"
+        "A91": "male:divorced/separated",
+        "A92": "female:divorced/separated/married",
+        "A93": "male:single",
+        "A94": "male:married/widowed",
+        "A95": "female:single",
     }
-    other_parties_map = {
-        "A101": "none", "A102": "co applicant", "A103": "guarantor"
-    }
+    other_parties_map = {"A101": "none", "A102": "co applicant", "A103": "guarantor"}
     property_magnitude_map = {
-        "A121": "real estate", "A122": "life insurance",
-        "A123": "car", "A124": "no known property"
+        "A121": "real estate",
+        "A122": "life insurance",
+        "A123": "car",
+        "A124": "no known property",
     }
-    other_payment_plans_map = {
-        "A141": "bank", "A142": "stores", "A143": "none"
-    }
-    housing_map = {
-        "A151": "rent", "A152": "own", "A153": "for free"
-    }
+    other_payment_plans_map = {"A141": "bank", "A142": "stores", "A143": "none"}
+    housing_map = {"A151": "rent", "A152": "own", "A153": "for free"}
     job_map = {
-        "A171": "unemp/unskilled non res", "A172": "unskilled resident",
-        "A173": "skilled", "A174": "high qualif/self emp/mgmt"
+        "A171": "unemp/unskilled non res",
+        "A172": "unskilled resident",
+        "A173": "skilled",
+        "A174": "high qualif/self emp/mgmt",
     }
-    telephone_map = {
-        "A191": "none", "A192": "yes"
-    }
-    foreign_worker_map = {
-        "A201": "yes", "A202": "no"
-    }
+    telephone_map = {"A191": "none", "A192": "yes"}
+    foreign_worker_map = {"A201": "yes", "A202": "no"}
 
     # Apply mappings
     df["checking_status"] = df["checking_status"].map(checking_status_map)
@@ -175,8 +220,21 @@ def process_adult_census(train_path: Path, test_path: Path, output_path: Path) -
     print("Processing Adult Census dataset...")
 
     # Read both files
-    df_train = pd.read_csv(train_path, header=None, names=ADULT_COLUMNS, na_values=" ?", skipinitialspace=True)
-    df_test = pd.read_csv(test_path, header=None, names=ADULT_COLUMNS, na_values=" ?", skipinitialspace=True, skiprows=1)
+    df_train = pd.read_csv(
+        train_path,
+        header=None,
+        names=ADULT_COLUMNS,
+        na_values=" ?",
+        skipinitialspace=True,
+    )
+    df_test = pd.read_csv(
+        test_path,
+        header=None,
+        names=ADULT_COLUMNS,
+        na_values=" ?",
+        skipinitialspace=True,
+        skiprows=1,
+    )
 
     # Combine
     df = pd.concat([df_train, df_test], ignore_index=True)
@@ -216,24 +274,24 @@ def main():
         "--dataset",
         choices=["german", "adult", "all"],
         default="german",
-        help="Dataset to download (default: german)"
+        help="Dataset to download (default: german)",
     )
     parser.add_argument(
         "--data-dir",
         type=Path,
         default=Path("data"),
-        help="Directory to store data (default: data/)"
+        help="Directory to store data (default: data/)",
     )
     parser.add_argument(
         "--create-sample",
         action="store_true",
-        help="Also create a small sample for CI testing"
+        help="Also create a small sample for CI testing",
     )
     parser.add_argument(
         "--sample-size",
         type=int,
         default=500,
-        help="Size of sample dataset (default: 500)"
+        help="Size of sample dataset (default: 500)",
     )
 
     args = parser.parse_args()
