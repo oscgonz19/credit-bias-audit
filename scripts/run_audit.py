@@ -16,6 +16,7 @@ from src.fairness_metrics import compute_all_metrics
 from src.mitigation import apply_eq_odds_postprocessing, apply_reweighing
 from src.models import get_predictions, train_baseline_model
 from src.reporting import generate_markdown_report, generate_metrics_csv
+from src.visualization import generate_all_visualizations
 
 
 def run_baseline_audit(
@@ -273,6 +274,11 @@ def main():
         default=Path("reports"),
         help="Output directory for reports",
     )
+    parser.add_argument(
+        "--no-viz",
+        action="store_true",
+        help="Skip generating visualization figures",
+    )
 
     args = parser.parse_args()
 
@@ -361,6 +367,46 @@ def main():
     md_path = args.out_dir / "report.md"
     generate_markdown_report(results, config, md_path)
     print(f"  Report: {md_path}")
+
+    # Generate visualizations
+    if not args.no_viz:
+        print("\n" + "=" * 60)
+        print("GENERATING VISUALIZATIONS")
+        print("=" * 60)
+
+        # Get baseline predictions for visualization
+        baseline_result = results[0]
+        y_pred_viz = baseline_result["predictions"]
+        y_proba_viz = baseline_result.get("probabilities")
+
+        # Determine group names based on protected attribute
+        group_name_map = {
+            "sex": ("Female", "Male"),
+            "age": ("Young", "Aged"),
+            "race": ("Non-White", "White"),
+            "foreign_worker": ("Foreign", "Native"),
+        }
+        group_names = group_name_map.get(args.protected_attr, ("Unprivileged", "Privileged"))
+
+        # Get protected attribute values for test set
+        protected_values = data["X_test"][data["protected_attr"]].values
+        privileged_value = data["privileged_groups"][0][data["protected_attr"]]
+
+        figures_dir = args.out_dir / "figures"
+        saved_figures = generate_all_visualizations(
+            results=results,
+            y_true=data["y_test"].values,
+            y_pred=y_pred_viz,
+            y_proba=y_proba_viz,
+            protected_attr=protected_values,
+            privileged_value=privileged_value,
+            group_names=group_names,
+            output_dir=figures_dir,
+        )
+
+        print(f"  Generated {len(saved_figures)} figures in {figures_dir}/")
+        for name, path in saved_figures.items():
+            print(f"    - {name}: {path.name}")
 
     print("\nAudit complete!")
 
