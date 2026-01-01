@@ -114,7 +114,6 @@ def plot_fairness_metrics_bar(
     for bar, val in zip(bars, values):
         height = bar.get_height()
         va = "bottom" if height >= 0 else "top"
-        offset = 0.02 if height >= 0 else -0.02
         ax.annotate(
             f"{val:.3f}",
             xy=(bar.get_x() + bar.get_width() / 2, height),
@@ -127,7 +126,13 @@ def plot_fairness_metrics_bar(
 
     # Add threshold lines
     if show_thresholds:
-        ax.axhline(y=0.1, color=COLORS["threshold"], linestyle="--", linewidth=2, label="Fair threshold (±0.1)")
+        ax.axhline(
+            y=0.1,
+            color=COLORS["threshold"],
+            linestyle="--",
+            linewidth=2,
+            label="Fair threshold (±0.1)",
+        )
         ax.axhline(y=-0.1, color=COLORS["threshold"], linestyle="--", linewidth=2)
         ax.axhline(y=0, color="black", linestyle="-", linewidth=0.5)
 
@@ -142,7 +147,11 @@ def plot_fairness_metrics_bar(
         Patch(facecolor="#e74c3c", edgecolor="black", label="Outside fair range"),
     ]
     if show_thresholds:
-        legend_elements.append(plt.Line2D([0], [0], color=COLORS["threshold"], linestyle="--", label="Threshold (±0.1)"))
+        legend_elements.append(
+            plt.Line2D(
+                [0], [0], color=COLORS["threshold"], linestyle="--", label="Threshold (±0.1)"
+            )
+        )
     ax.legend(handles=legend_elements, loc="upper right")
 
     plt.tight_layout()
@@ -213,7 +222,14 @@ def plot_fairness_radar(
 
     # Add fair threshold circle
     fair_threshold = [0.7] * (len(labels) + 1)
-    ax.plot(angles, fair_threshold, color=COLORS["threshold"], linestyle="--", linewidth=2, label="Fair threshold")
+    ax.plot(
+        angles,
+        fair_threshold,
+        color=COLORS["threshold"],
+        linestyle="--",
+        linewidth=2,
+        label="Fair threshold",
+    )
 
     # Configure chart
     ax.set_xticks(angles[:-1])
@@ -278,9 +294,31 @@ def plot_group_metrics_comparison(
     unpriv_values = [unpriv_metrics.get(m, 0) for m in metric_names]
     overall_values = [overall_metrics.get(m, 0) for m in metric_names]
 
-    bars1 = ax.bar(x - width, priv_values, width, label="Privileged", color=COLORS["privileged"], edgecolor="black")
-    bars2 = ax.bar(x, unpriv_values, width, label="Unprivileged", color=COLORS["unprivileged"], edgecolor="black")
-    bars3 = ax.bar(x + width, overall_values, width, label="Overall", color=COLORS["neutral"], edgecolor="black", alpha=0.7)
+    bars1 = ax.bar(
+        x - width,
+        priv_values,
+        width,
+        label="Privileged",
+        color=COLORS["privileged"],
+        edgecolor="black",
+    )
+    bars2 = ax.bar(
+        x,
+        unpriv_values,
+        width,
+        label="Unprivileged",
+        color=COLORS["unprivileged"],
+        edgecolor="black",
+    )
+    bars3 = ax.bar(
+        x + width,
+        overall_values,
+        width,
+        label="Overall",
+        color=COLORS["neutral"],
+        edgecolor="black",
+        alpha=0.7,
+    )
 
     # Add value labels
     def add_labels(bars):
@@ -354,7 +392,9 @@ def plot_outcome_distribution(
             group_labels = labels[mask]
             pos_rate = np.mean(group_labels)
             neg_rate = 1 - pos_rate
-            data.append({"Group": name, "Positive": pos_rate, "Negative": neg_rate, "N": len(group_labels)})
+            data.append(
+                {"Group": name, "Positive": pos_rate, "Negative": neg_rate, "N": len(group_labels)}
+            )
 
         df = pd.DataFrame(data)
 
@@ -363,12 +403,36 @@ def plot_outcome_distribution(
         width = 0.5
 
         ax.bar(x, df["Negative"], width, label="Negative (0)", color="#e74c3c", alpha=0.8)
-        ax.bar(x, df["Positive"], width, bottom=df["Negative"], label="Positive (1)", color="#2ecc71", alpha=0.8)
+        ax.bar(
+            x,
+            df["Positive"],
+            width,
+            bottom=df["Negative"],
+            label="Positive (1)",
+            color="#2ecc71",
+            alpha=0.8,
+        )
 
         # Add percentage labels
         for i, row in df.iterrows():
-            ax.text(i, row["Negative"] / 2, f"{row['Negative']:.1%}", ha="center", va="center", fontweight="bold", color="white")
-            ax.text(i, row["Negative"] + row["Positive"] / 2, f"{row['Positive']:.1%}", ha="center", va="center", fontweight="bold", color="white")
+            ax.text(
+                i,
+                row["Negative"] / 2,
+                f"{row['Negative']:.1%}",
+                ha="center",
+                va="center",
+                fontweight="bold",
+                color="white",
+            )
+            ax.text(
+                i,
+                row["Negative"] + row["Positive"] / 2,
+                f"{row['Positive']:.1%}",
+                ha="center",
+                va="center",
+                fontweight="bold",
+                color="white",
+            )
             ax.text(i, 1.02, f"n={row['N']}", ha="center", va="bottom", fontsize=9)
 
         ax.set_xticks(x)
@@ -548,7 +612,9 @@ def plot_fairness_accuracy_tradeoff(
         )
 
     # Add reference lines
-    ax.axvline(x=0.1, color=COLORS["threshold"], linestyle="--", linewidth=2, label="Fair threshold (0.1)")
+    ax.axvline(
+        x=0.1, color=COLORS["threshold"], linestyle="--", linewidth=2, label="Fair threshold (0.1)"
+    )
 
     # Shade fair region
     ax.axvspan(0, 0.1, alpha=0.1, color="green", label="Fair region")
@@ -631,7 +697,16 @@ def plot_confusion_matrices_by_group(
             for j in range(2):
                 text = f"{cm[i, j]}\n({cm_normalized[i, j]:.1f}%)"
                 color = "white" if cm_normalized[i, j] > 50 else "black"
-                ax.text(j + 0.5, i + 0.5, text, ha="center", va="center", fontsize=11, fontweight="bold", color=color)
+                ax.text(
+                    j + 0.5,
+                    i + 0.5,
+                    text,
+                    ha="center",
+                    va="center",
+                    fontsize=11,
+                    fontweight="bold",
+                    color=color,
+                )
 
         ax.set_xlabel("Predicted", fontsize=11)
         ax.set_ylabel("Actual", fontsize=11)
@@ -694,7 +769,14 @@ def plot_roc_curves_by_group(
 
         linestyle = "--" if name == "Overall" else "-"
         linewidth = 2 if name == "Overall" else 2.5
-        ax.plot(fpr, tpr, color=color, linestyle=linestyle, linewidth=linewidth, label=f"{name} (AUC = {auc_score:.3f})")
+        ax.plot(
+            fpr,
+            tpr,
+            color=color,
+            linestyle=linestyle,
+            linewidth=linewidth,
+            label=f"{name} (AUC = {auc_score:.3f})",
+        )
 
     # Diagonal reference line
     ax.plot([0, 1], [0, 1], "k--", linewidth=1, alpha=0.5, label="Random (AUC = 0.500)")
@@ -779,12 +861,42 @@ def plot_score_distribution(
     # Right plot: KDE comparison
     ax2 = axes[1]
     try:
-        sns.kdeplot(y_proba[~privileged_mask], ax=ax2, color=COLORS["unprivileged"], label=group_names[0], linewidth=2.5, fill=True, alpha=0.3)
-        sns.kdeplot(y_proba[privileged_mask], ax=ax2, color=COLORS["privileged"], label=group_names[1], linewidth=2.5, fill=True, alpha=0.3)
+        sns.kdeplot(
+            y_proba[~privileged_mask],
+            ax=ax2,
+            color=COLORS["unprivileged"],
+            label=group_names[0],
+            linewidth=2.5,
+            fill=True,
+            alpha=0.3,
+        )
+        sns.kdeplot(
+            y_proba[privileged_mask],
+            ax=ax2,
+            color=COLORS["privileged"],
+            label=group_names[1],
+            linewidth=2.5,
+            fill=True,
+            alpha=0.3,
+        )
     except Exception:
         # Fallback if KDE fails
-        ax2.hist(y_proba[~privileged_mask], bins=30, alpha=0.5, color=COLORS["unprivileged"], label=group_names[0], density=True)
-        ax2.hist(y_proba[privileged_mask], bins=30, alpha=0.5, color=COLORS["privileged"], label=group_names[1], density=True)
+        ax2.hist(
+            y_proba[~privileged_mask],
+            bins=30,
+            alpha=0.5,
+            color=COLORS["unprivileged"],
+            label=group_names[0],
+            density=True,
+        )
+        ax2.hist(
+            y_proba[privileged_mask],
+            bins=30,
+            alpha=0.5,
+            color=COLORS["privileged"],
+            label=group_names[1],
+            density=True,
+        )
 
     ax2.axvline(x=0.5, color="black", linestyle="--", linewidth=2, label="Threshold (0.5)")
     ax2.set_xlabel("Predicted Probability", fontsize=11)
@@ -858,7 +970,14 @@ def create_audit_dashboard(
             ax1.axhline(y=-0.1, color=COLORS["threshold"], linestyle="--", linewidth=2)
             ax1.axhline(y=0, color="black", linestyle="-", linewidth=0.5)
             for bar, val in zip(bars, values):
-                ax1.text(bar.get_x() + bar.get_width() / 2, bar.get_height(), f"{val:.3f}", ha="center", va="bottom" if val >= 0 else "top", fontweight="bold")
+                ax1.text(
+                    bar.get_x() + bar.get_width() / 2,
+                    bar.get_height(),
+                    f"{val:.3f}",
+                    ha="center",
+                    va="bottom" if val >= 0 else "top",
+                    fontweight="bold",
+                )
     ax1.set_title("Baseline Fairness Metrics", fontweight="bold", size=12)
     ax1.set_ylabel("Metric Value")
 
@@ -890,12 +1009,30 @@ def create_audit_dashboard(
     ]:
         cm = confusion_matrix(y_true[mask], y_pred[mask], labels=[0, 1])
         cm_normalized = cm.astype("float") / cm.sum() * 100
-        sns.heatmap(cm_normalized, annot=False, cmap="Blues", ax=ax, cbar=False, square=True, linewidths=2, linecolor="white")
+        sns.heatmap(
+            cm_normalized,
+            annot=False,
+            cmap="Blues",
+            ax=ax,
+            cbar=False,
+            square=True,
+            linewidths=2,
+            linecolor="white",
+        )
         for i in range(2):
             for j in range(2):
                 text = f"{cm[i, j]}\n({cm_normalized[i, j]:.1f}%)"
                 color = "white" if cm_normalized[i, j] > 50 else "black"
-                ax.text(j + 0.5, i + 0.5, text, ha="center", va="center", fontsize=9, fontweight="bold", color=color)
+                ax.text(
+                    j + 0.5,
+                    i + 0.5,
+                    text,
+                    ha="center",
+                    va="center",
+                    fontsize=9,
+                    fontweight="bold",
+                    color=color,
+                )
         ax.set_xlabel("Predicted")
         ax.set_ylabel("Actual")
         ax.set_xticklabels(["Neg", "Pos"])
@@ -952,10 +1089,16 @@ def create_audit_dashboard(
     if len(results) >= 2:
         for i, result in enumerate(results):
             acc = result.get("metrics", {}).get("performance", {}).get("accuracy", 0)
-            spd = abs(result.get("metrics", {}).get("fairness", {}).get("statistical_parity_difference", 0))
+            spd = abs(
+                result.get("metrics", {})
+                .get("fairness", {})
+                .get("statistical_parity_difference", 0)
+            )
             mitigation = result.get("mitigation", "unknown").replace("_", " ").title()
             color = plt.cm.Set1(i / len(results))
-            ax6.scatter(spd, acc, s=200, c=[color], label=mitigation, edgecolors="black", linewidths=2)
+            ax6.scatter(
+                spd, acc, s=200, c=[color], label=mitigation, edgecolors="black", linewidths=2
+            )
 
         ax6.axvline(x=0.1, color=COLORS["threshold"], linestyle="--", linewidth=2)
         ax6.axvspan(0, 0.1, alpha=0.1, color="green")
@@ -1036,7 +1179,9 @@ def generate_all_visualizations(
 
     # 4. Outcome distribution
     path = output_dir / "outcome_distribution.png"
-    plot_outcome_distribution(y_true, y_pred, protected_attr, privileged_value, group_names, save_path=path)
+    plot_outcome_distribution(
+        y_true, y_pred, protected_attr, privileged_value, group_names, save_path=path
+    )
     saved_figures["outcome_distribution"] = path
     plt.close()
 
@@ -1061,28 +1206,41 @@ def generate_all_visualizations(
 
     # 8. Confusion matrices
     path = output_dir / "confusion_matrices.png"
-    plot_confusion_matrices_by_group(y_true, y_pred, protected_attr, privileged_value, group_names, save_path=path)
+    plot_confusion_matrices_by_group(
+        y_true, y_pred, protected_attr, privileged_value, group_names, save_path=path
+    )
     saved_figures["confusion_matrices"] = path
     plt.close()
 
     # 9. ROC curves
     if y_proba is not None:
         path = output_dir / "roc_curves.png"
-        plot_roc_curves_by_group(y_true, y_proba, protected_attr, privileged_value, group_names, save_path=path)
+        plot_roc_curves_by_group(
+            y_true, y_proba, protected_attr, privileged_value, group_names, save_path=path
+        )
         saved_figures["roc_curves"] = path
         plt.close()
 
     # 10. Score distribution
     if y_proba is not None:
         path = output_dir / "score_distribution.png"
-        plot_score_distribution(y_proba, protected_attr, privileged_value, group_names, save_path=path)
+        plot_score_distribution(
+            y_proba, protected_attr, privileged_value, group_names, save_path=path
+        )
         saved_figures["score_distribution"] = path
         plt.close()
 
     # 11. Full dashboard
     path = output_dir / "dashboard.png"
     create_audit_dashboard(
-        results, y_true, y_pred, y_proba, protected_attr, privileged_value, group_names, save_path=path
+        results,
+        y_true,
+        y_pred,
+        y_proba,
+        protected_attr,
+        privileged_value,
+        group_names,
+        save_path=path,
     )
     saved_figures["dashboard"] = path
     plt.close()
