@@ -7,6 +7,8 @@
 > **EN** | [ES](#español)
 
 ---
+<img width="962" height="653" alt="image" src="https://github.com/user-attachments/assets/5401f0b3-72e9-4c24-ac33-a3ef56ddbd8d" />
+
 
 ## Documentation | Documentación
 
